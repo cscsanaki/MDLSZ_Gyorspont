@@ -50,7 +50,7 @@ A kész fájl itt jön létre: `dist\MDLSZ_Gyorspont.exe`. Az `.exe` futtatásá
 A munkafüzetnek az alábbi szerkezetet kell követnie:
 
 - `Versenyengedelyek` nevű lap: az A oszlopban a versenyengedély-szám, a B oszlopban a név, a C oszlopban az egyesület szerepel.
-- Külön munkalap szükséges mind a tíz versenyszámhoz:
+- Mind a tíz versenyszámhoz külön munkalap szükséges:
   - KKPI - Nyílt és KKPI - Optika
   - NKPI - Nyílt és NKPI - Optika
   - KKPU - Nyílt és KKPU - Optika
@@ -62,13 +62,18 @@ A munkafüzetnek az alábbi szerkezetet kell követnie:
 
 A munkafüzet versenyzők nevét, engedélyszámát és egyesületét tartalmazhatja. Valódi versenyadatot, munkafüzetet, `.bak` másolatot vagy más személyes adatot ne tölts fel ebbe a repóba. Használat előtt készíts külön biztonsági másolatot, és először egy munkafüzet másolatával próbáld ki a programot. A program a kiválasztott munkafüzetet közvetlenül módosítja és menti.
 
-## A repó fájljai
+## A repó fontosabb fájljai
 
+- `.github/ISSUE_TEMPLATE/` — hibajelentési és funkciójavaslati sablonok
+- `.github/PULL_REQUEST_TEMPLATE.md` — pull request sablon
 - `.gitignore` — a Git által figyelmen kívül hagyott fájlok szabályai
+- `CODE_OF_CONDUCT.md` — közösségi magatartási szabályok
+- `CONTRIBUTING.md` — útmutató a közreműködéshez
 - `LICENSE` — MIT licenc
-- `mdlsz_gyorspont.py` — a program Python-forráskódja
-- `build_exe.bat` — Windowsos build parancsfájl
 - `README.md` — projekt- és használati leírás
+- `SECURITY.md` — biztonsági hibák bejelentésének módja
+- `build_exe.bat` — Windowsos build parancsfájl
+- `mdlsz_gyorspont.py` — a program Python-forráskódja
 
 A lefordított `.exe` külön letölthető a fenti hivatkozásról. A kiadások oldalán a forráskód archívuma is elérhető.
 
