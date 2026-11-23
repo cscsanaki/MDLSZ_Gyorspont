@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# PyInstaller output
+build/
+dist/
+*.spec
+
+# Versenyadatok és Excel biztonsági mentések
+*.xlsx
+*.xlsx.bak
+~$*.xlsx
