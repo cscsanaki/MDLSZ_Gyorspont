@@ -64,6 +64,8 @@ A munkafüzet versenyzők nevét, engedélyszámát és egyesületét tartalmazh
 
 ## A repó fájljai
 
+- `.gitignore` — a Git által figyelmen kívül hagyott fájlok szabályai
+- `LICENSE` — MIT licenc
 - `mdlsz_gyorspont.py` — a program Python-forráskódja
 - `build_exe.bat` — Windowsos build parancsfájl
 - `README.md` — projekt- és használati leírás
