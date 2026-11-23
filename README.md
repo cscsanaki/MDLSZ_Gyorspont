@@ -1,8 +1,14 @@
 # MDLSZ Gyorspont
 
-**MDLSZ Gyorspont** Windowsos asztali alkalmazás az MDLSZ gyorspont lövészeti versenyek helyszíni adminisztrációjához. Segítségével versenyzőket kereshetsz és nevezhetsz, eredményeket rögzíthetsz, követheted a verseny állását, valamint kezelheted az élmezőny holtversenyeit.
+**MDLSZ Gyorspont** Windowsos asztali alkalmazás az MDLSZ gyorspont-lövészeti versenyek helyszíni adminisztrációjához. Segítségével versenyzőket kereshetsz és nevezhetsz, eredményeket rögzíthetsz, követheted a verseny állását, valamint kezelheted az élmezőny holtversenyeit.
 
-> **Verzió:** a forráskód fejlécében `v1.0.2` szerepel, az alkalmazás ablaka viszont jelenleg `v1.0.0`-t mutat. Az első kiadás előtt ezt érdemes egységesíteni.
+**Aktuális kiadás: v1.0.2**
+
+## Letöltés
+
+[**MDLSZ_Gyorspont.exe letöltése Windowsra**](https://github.com/cscsanaki/MDLSZ_Gyorspont/releases/latest/download/MDLSZ_Gyorspont.exe)
+
+[Összes kiadás és forráskód megtekintése](https://github.com/cscsanaki/MDLSZ_Gyorspont/releases)
 
 ## Főbb funkciók
 
@@ -32,9 +38,9 @@ python -m pip install openpyxl pyinstaller
 python -m PyInstaller --noconfirm --onefile --windowed --name "MDLSZ_Gyorspont" mdlsz_gyorspont.py
 ```
 
-A kész fájl itt jön létre: `dist\MDLSZ_Gyorspont.exe`. Ezt az `.exe`-t futtató Windows gépen nem kell külön Pythont telepíteni.
+A kész fájl itt jön létre: `dist\MDLSZ_Gyorspont.exe`. Az `.exe` futtatásához a célgépen nem kell külön Pythont telepíteni.
 
-## Használat verseny munkafüzettel
+## Használat versenymunkafüzettel
 
 1. Indítsd el a programot, majd az **XLS betöltése** gombbal válaszd ki a hivatalos verseny `.xlsx` munkafüzetet.
 2. Keresd meg a versenyzőt a versenyengedély-száma alapján.
@@ -43,8 +49,8 @@ A kész fájl itt jön létre: `dist\MDLSZ_Gyorspont.exe`. Ezt az `.exe`-t futta
 
 A munkafüzetnek az alábbi szerkezetet kell követnie:
 
-- `Versenyengedelyek` nevű lap: A oszlopban versenyengedély-szám, B oszlopban név, C oszlopban egyesület.
-- Külön munkalap mind a tíz versenyszámhoz:
+- `Versenyengedelyek` nevű lap: az A oszlopban a versenyengedély-szám, a B oszlopban a név, a C oszlopban az egyesület szerepel.
+- Külön munkalap szükséges mind a tíz versenyszámhoz:
   - KKPI - Nyílt és KKPI - Optika
   - NKPI - Nyílt és NKPI - Optika
   - KKPU - Nyílt és KKPU - Optika
@@ -62,7 +68,7 @@ A munkafüzet versenyzők nevét, engedélyszámát és egyesületét tartalmazh
 - `build_exe.bat` — Windowsos build parancsfájl
 - `README.md` — projekt- és használati leírás
 
-A lefordított `.exe` a GitHub **Releases** részében tölthető le.
+A lefordított `.exe` külön letölthető a fenti hivatkozásról. A kiadások oldalán a forráskód archívuma is elérhető.
 
 ## Licenc
 
