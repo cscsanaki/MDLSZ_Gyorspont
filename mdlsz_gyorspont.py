@@ -4,8 +4,8 @@
 ===============================================================================
  Project     : MDLSZ_Gyorspont
  File        : mdlsz_gyorspont.py
- Version     : 1.0.2
- Author      : Csaba Csanaki (cscsanaki@gmail.com)
+ Version     : 1.0.3
+ Author      : Csaba Csanaki (cscsanaki)
  Repository  : https://github.com/cscsanaki/MDLSZ_Gyorspont
  Description : MDLSZ Gyorspont lovészeti verseny nyilvántartó és
                eredményrögzítő alkalmazás (Tkinter + openpyxl).
@@ -153,6 +153,9 @@ def normalize_license(val):
     s = str(val).strip()
     if s.endswith(".0"):
         s = s[:-2]
+    # Kezdő nullák eltávolítása számjegyekből (pl. "04241" -> "4241"), hogy egyezzen az Excelben tárolt értékkel
+    if s.isdigit():
+        s = s.lstrip("0") or "0"
     return s
 
 
@@ -238,7 +241,7 @@ def _make_circle_photo(active: bool, size: int = 24):
 class LoterModernApp(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("MDLSZ_Gyorspont v1.0.2")
+        self.title("MDLSZ_Gyorspont v1.0.3")
         self.geometry("1280x820")
         self.minsize(1060, 700)
         self.configure(bg="#F1F5F9")
