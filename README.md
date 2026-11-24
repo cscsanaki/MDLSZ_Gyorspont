@@ -2,7 +2,7 @@
 
 **MDLSZ Gyorspont** Windowsos asztali alkalmazás az MDLSZ gyorspont-lövészeti versenyek helyszíni adminisztrációjához. Segítségével versenyzőket kereshetsz és nevezhetsz, eredményeket rögzíthetsz, követheted a verseny állását, valamint kezelheted az élmezőny holtversenyeit.
 
-**Aktuális kiadás: v1.0.2**
+**Aktuális kiadás: v1.0.3**
 
 ## Letöltés
 
