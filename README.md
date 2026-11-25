@@ -14,7 +14,7 @@
 
 - Versenyzők keresése versenyengedély-szám alapján a munkafüzet rejtett `Versenyengedelyek` lapjáról.
 - Nevezés és nevezés visszavonása a tíz versenyszám bármelyikében.
-- 0 és 195 közötti eredmény, illetve fegyverhiba rögzítése.
+- 0 és 195 közötti egész pontszám, illetve fegyverhiba rögzítése.
 - Az utoljára kezelt versenyzők, a teljes indulói névsor és a verseny statisztikáinak áttekintése.
 - Versenyszámonkénti dobogó megjelenítése, holtverseny feloldása a 13, 12, 11, 10 és 9 találatok számossága alapján.
 - A módosítások mentése a kiválasztott Excel-munkafüzetbe; a program megőrzi a cellastílusokat és képleteket.
