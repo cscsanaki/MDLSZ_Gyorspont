@@ -4,7 +4,7 @@
 ===============================================================================
  Project     : MDLSZ_Gyorspont
  File        : mdlsz_gyorspont.py
- Version     : 1.0.3
+ Version     : 1.0.4
  Author      : Csaba Csanaki (cscsanaki)
  Repository  : https://github.com/cscsanaki/MDLSZ_Gyorspont
  Description : MDLSZ Gyorspont lovészeti verseny nyilvántartó és
@@ -188,22 +188,19 @@ def parse_score_for_sort(val, hit_counts=None):
 
 
 def validate_score_input(raw_text):
-    """Visszaadja a normalizált Excel értéket (int/float vagy 'fegyverhiba' vagy None),
-    vagy ValueError-t dob érvénytelen adat esetén."""
+    """Egész pontszámot (0–195), 'fegyverhiba' értéket vagy üres mezőt fogad el."""
     s = raw_text.strip()
     if s == "":
         return None
     if s.lower() == "fegyverhiba":
         return "fegyverhiba"
     try:
-        num = float(s.replace(",", "."))
+        num = int(s)
     except ValueError:
-        raise ValueError("Csak 0 és 195 közötti szám, vagy a 'fegyverhiba' szöveg adható meg!")
+        raise ValueError("Csak 0 és 195 közötti egész szám, vagy a 'fegyverhiba' szöveg adható meg!")
     if num < 0 or num > 195:
-        raise ValueError("A pontszám csak 0 és 195 között lehet!")
-    if num.is_integer():
-        return int(num)
-    return round(num, 2)
+        raise ValueError("A pontszám csak 0 és 195 közötti egész szám lehet!")
+    return num
 
 
 
@@ -241,7 +238,7 @@ def _make_circle_photo(active: bool, size: int = 24):
 class LoterModernApp(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("MDLSZ_Gyorspont v1.0.3")
+        self.title("MDLSZ_Gyorspont v1.0.4")
         self.geometry("1280x820")
         self.minsize(1060, 700)
         self.configure(bg="#F1F5F9")
@@ -851,7 +848,7 @@ class LoterModernApp(tk.Tk):
 
         tk.Label(
             score_bar,
-            text="Pontszám (0–195 vagy fegyverhiba):",
+            text="Pontszám (egész szám, 0–195 vagy fegyverhiba):",
             font=("Segoe UI", 9),
             fg="#334155",
             bg="#F8FAFC",
