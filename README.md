@@ -49,7 +49,9 @@ python3 -m pip install openpyxl
 python3 mdlsz_gyorspont.py
 ```
 
-## Önálló Windows `.exe` készítése
+## Önálló alkalmazás készítése
+
+### Windows
 
 Telepített Python mellett kattints duplán a `build_exe.bat` fájlra, vagy futtasd Parancssorból. A build kézzel is elvégezhető:
 
@@ -58,7 +60,11 @@ python -m pip install openpyxl pyinstaller
 python -m PyInstaller --noconfirm --clean --onefile --windowed --name "MDLSZ_Gyorspont" --add-data "assets;assets" mdlsz_gyorspont.py
 ```
 
-A kész fájl itt jön létre: `dist\MDLSZ_Gyorspont.exe`. Ezt az `.exe`-t futtató Windows gépen nem kell külön Pythont telepíteni.
+A kész fájl itt jön létre: `dist\MDLSZ_Gyorspont.exe`. Futtatásához a célgépen nem kell külön Pythont telepíteni. A `build_exe.bat` csak Windowsos buildre szolgál.
+
+### macOS
+
+A macOS-es alkalmazáscsomagokat a GitHub Actions készíti el. Külön ZIP tölthető le Apple Silicon (ARM64) és Intel (x86_64) Macre. Mindkét ZIP az `MDLSZ_Gyorspont.app` alkalmazáscsomagot tartalmazza.
 
 ## Használat verseny munkafüzettel
 
