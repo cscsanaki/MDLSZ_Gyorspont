@@ -8,8 +8,18 @@ A kezdőképernyő az MDLSZ és a Gyorspont logóját jeleníti meg. A külön k
 
 ## Letöltés
 
-[**MDLSZ_Gyorspont.exe letöltése Windowsra**](https://github.com/cscsanaki/MDLSZ_Gyorspont/releases/latest/download/MDLSZ_Gyorspont.exe)  
+### Windows
+
+[**MDLSZ_Gyorspont.exe letöltése Windowsra**](https://github.com/cscsanaki/MDLSZ_Gyorspont/releases/latest/download/MDLSZ_Gyorspont.exe)
+
+### macOS
+
+[MDLSZ Gyorspont letöltése Apple Silicon Macre (ARM64)](https://github.com/cscsanaki/MDLSZ_Gyorspont/releases/latest/download/MDLSZ_Gyorspont-macOS-AppleSilicon.zip)  
+[MDLSZ Gyorspont letöltése Intel Macre (x86_64)](https://github.com/cscsanaki/MDLSZ_Gyorspont/releases/latest/download/MDLSZ_Gyorspont-macOS-Intel.zip)
+
 [Összes kiadás megtekintése](https://github.com/cscsanaki/MDLSZ_Gyorspont/releases)
+
+A macOS-es ZIP-fájlok egy-egy `MDLSZ_Gyorspont.app` alkalmazáscsomagot tartalmaznak. A csomagok jelenleg nincsenek Apple által aláírva és notarizálva, ezért a macOS biztonsági figyelmeztetést jeleníthet meg.
 
 ## Főbb funkciók
 
