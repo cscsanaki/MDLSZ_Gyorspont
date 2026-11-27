@@ -91,11 +91,12 @@ A munkafüzet versenyzők nevét, engedélyszámát és egyesületét tartalmazh
 ## A repó fájljai
 
 - `mdlsz_gyorspont.py` — a program Python-forráskódja
-- `build_exe.bat` — Windowsos build parancsfájl
+- `build_exe.bat` — Windowsos helyi build parancsfájl
+- `.github/workflows/build-windows-macos.yml` — Windows- és macOS-build GitHub Actions használatával
 - `assets/` — a kezdőképernyőn használt MDLSZ és Gyorspont logó
 - `README.md` — projekt- és használati leírás
 
-A lefordított `.exe` a GitHub **Releases** részében tölthető le.
+A Windowsos `.exe` és a macOS-es ZIP-csomagok a GitHub **Releases** részében tölthetők le.
 
 ## Licenc
 
