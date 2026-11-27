@@ -104,7 +104,9 @@ A szoftver az [MIT licenc](LICENSE) feltételei szerint használható. A részle
 
 ## Code signing policy
 
-**Planned code signing:** Free code signing provided by SignPath.io, certificate by SignPath Foundation. The application is pending approval. Current release files are unsigned; signing will begin only after approval and workflow configuration.
+**Planned Windows code signing:** Free code signing provided by SignPath.io, certificate by SignPath Foundation. The application is pending approval. Current Windows executables are unsigned. If approved, SignPath will sign the Windows executable after the GitHub Actions signing workflow has been configured.
+
+**macOS signing:** The macOS application packages are currently unsigned and not notarized. Apple Developer ID signing and notarization are separate from the SignPath application.
 
 **Project roles:** Csanaki Csaba (@cscsanaki) maintains the project, reviews proposed changes, and will approve release signing requests.
 
