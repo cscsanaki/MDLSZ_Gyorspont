@@ -75,3 +75,11 @@ A lefordított `.exe` a GitHub **Releases** részében tölthető le.
 ## Licenc
 
 Ehhez a repóhoz még nincs licenc kiválasztva. Licenc hozzáadásáig minden jog fenntartva; a szoftver felhasználásához, módosításához vagy továbbterjesztéséhez kérd a repó tulajdonosának engedélyét.
+
+## Code signing policy
+
+**Planned code signing:** Free code signing provided by SignPath.io, certificate by SignPath Foundation. The application is pending approval. Current release files are unsigned; signing will begin only after approval and workflow configuration.
+
+**Project roles:** Csanaki Csaba (@cscsanaki) maintains the project, reviews proposed changes, and will approve release signing requests.
+
+**Privacy:** The application processes the selected workbook locally and does not upload workbook or competitor data. The update check contacts GitHub only when the user starts the check.
