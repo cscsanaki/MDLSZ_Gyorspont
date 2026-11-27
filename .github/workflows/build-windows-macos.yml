@@ -1,0 +1,133 @@
+name: Build Windows and macOS apps
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Existing release tag to attach the builds to (for example v1.0.6). Leave empty to build Actions artifacts only."
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows-exe:
+    name: Build Windows executable
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name || inputs.release_tag || github.ref }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install openpyxl pyinstaller
+
+      - name: Build EXE
+        run: >-
+          python -m PyInstaller --noconfirm --clean --onefile --windowed
+          --name "MDLSZ_Gyorspont"
+          --add-data "assets;assets"
+          mdlsz_gyorspont.py
+
+      - name: Verify EXE exists
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "dist/MDLSZ_Gyorspont.exe")) {
+            throw "The build did not create dist/MDLSZ_Gyorspont.exe"
+          }
+
+      - name: Upload EXE as a workflow artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: MDLSZ_Gyorspont-Windows-EXE
+          path: dist/MDLSZ_Gyorspont.exe
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Attach EXE to GitHub Release
+        if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.release_tag != '')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name || inputs.release_tag }}
+        run: |
+          gh release upload "$env:RELEASE_TAG" "dist/MDLSZ_Gyorspont.exe" `
+            --clobber `
+            --repo "$env:GITHUB_REPOSITORY"
+
+  build-macos-app:
+    name: Build macOS app (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            arch: arm64
+            asset_name: MDLSZ_Gyorspont-macOS-AppleSilicon.zip
+          - runner: macos-15-intel
+            arch: x86_64
+            asset_name: MDLSZ_Gyorspont-macOS-Intel.zip
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name || inputs.release_tag || github.ref }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install openpyxl pyinstaller
+
+      - name: Build macOS app bundle
+        run: |
+          python -m PyInstaller --noconfirm --clean --onedir --windowed \
+            --target-arch "${{ matrix.arch }}" \
+            --name "MDLSZ_Gyorspont" \
+            --add-data "assets:assets" \
+            mdlsz_gyorspont.py
+
+      - name: Verify and package app bundle
+        env:
+          ASSET_NAME: ${{ matrix.asset_name }}
+        run: |
+          test -d "dist/MDLSZ_Gyorspont.app"
+          ditto -c -k --sequesterRsrc --keepParent \
+            "dist/MDLSZ_Gyorspont.app" "$ASSET_NAME"
+
+      - name: Upload macOS app as a workflow artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: MDLSZ_Gyorspont-macOS-${{ matrix.arch }}
+          path: ${{ matrix.asset_name }}
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Attach macOS app to GitHub Release
+        if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.release_tag != '')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name || inputs.release_tag }}
+          ASSET_NAME: ${{ matrix.asset_name }}
+        run: |
+          gh release upload "$RELEASE_TAG" "$ASSET_NAME" \
+            --clobber \
+            --repo "$GITHUB_REPOSITORY"
