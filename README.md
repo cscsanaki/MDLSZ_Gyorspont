@@ -33,11 +33,20 @@ A macOS-es ZIP-fájlok egy-egy `MDLSZ_Gyorspont.app` alkalmazáscsomagot tartalm
 
 ## Futtatás Pythonból
 
-Windows alatt nyiss Parancssort a projekt mappájában, majd futtasd:
+Telepített Python mellett nyiss Parancssort Windows alatt, vagy Terminalt macOS-en.
+
+Windows:
 
 ```bat
 python -m pip install openpyxl
 python mdlsz_gyorspont.py
+```
+
+macOS:
+
+```bash
+python3 -m pip install openpyxl
+python3 mdlsz_gyorspont.py
 ```
 
 ## Önálló Windows `.exe` készítése
