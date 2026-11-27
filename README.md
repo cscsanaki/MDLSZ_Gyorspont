@@ -74,7 +74,7 @@ A lefordított `.exe` a GitHub **Releases** részében tölthető le.
 
 ## Licenc
 
-Ehhez a repóhoz még nincs licenc kiválasztva. Licenc hozzáadásáig minden jog fenntartva; a szoftver felhasználásához, módosításához vagy továbbterjesztéséhez kérd a repó tulajdonosának engedélyét.
+A szoftver az [MIT licenc](LICENSE) feltételei szerint használható. A részleteket a repó gyökerében található `LICENSE` fájl tartalmazza.
 
 ## Code signing policy
 
