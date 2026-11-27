@@ -102,12 +102,4 @@ A Windowsos `.exe` és a macOS-es ZIP-csomagok a GitHub **Releases** részében 
 
 A szoftver az [MIT licenc](LICENSE) feltételei szerint használható. A részleteket a repó gyökerében található `LICENSE` fájl tartalmazza.
 
-## Code signing policy
-
-**Planned Windows code signing:** Free code signing provided by SignPath.io, certificate by SignPath Foundation. The application is pending approval. Current Windows executables are unsigned. If approved, SignPath will sign the Windows executable after the GitHub Actions signing workflow has been configured.
-
-**macOS signing:** The macOS application packages are currently unsigned and not notarized. Apple Developer ID signing and notarization are separate from the SignPath application.
-
-**Project roles:** Csanaki Csaba (@cscsanaki) maintains the project, reviews proposed changes, and will approve release signing requests.
-
 **Privacy:** The application processes the selected workbook locally and does not upload workbook or competitor data. The update check contacts GitHub only when the user starts the check.
