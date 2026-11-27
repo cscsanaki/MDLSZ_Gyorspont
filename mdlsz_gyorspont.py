@@ -4,7 +4,7 @@
 ===============================================================================
  Project     : MDLSZ_Gyorspont
  File        : mdlsz_gyorspont.py
- Version     : 1.0.4
+ Version     : 1.0.6
  Author      : Csaba Csanaki (cscsanaki)
  Repository  : https://github.com/cscsanaki/MDLSZ_Gyorspont
  Description : MDLSZ Gyorspont lovészeti verseny nyilvántartó és
@@ -13,9 +13,13 @@
 """
 
 import copy
+import json
 import os
 import shutil
 import sys
+import threading
+import urllib.request
+import webbrowser
 import zipfile
 import tkinter as tk
 from datetime import datetime
@@ -36,9 +40,30 @@ DIVISIONS = [
     "Sörétes - Optika",
 ]
 
+APP_VERSION = "1.0.6"
+GITHUB_LATEST_RELEASE_API = (
+    "https://api.github.com/repos/cscsanaki/MDLSZ_Gyorspont/releases/latest"
+)
+GITHUB_RELEASES_URL = "https://github.com/cscsanaki/MDLSZ_Gyorspont/releases/latest"
+RELEASE_EXE_NAME = "MDLSZ_Gyorspont.exe"
+START_SCREEN_LOGOS = (
+    "assets/mdlsz_logo.png",
+    "assets/gyorspont_logo.png",
+)
+
 LICENSE_SHEET = "Versenyengedelyek"
 DATA_START_ROW = 6
 DATA_END_ROW = 55  # 50 alapértelmezett sor, de dinamikusan bővíthető
+
+
+def resource_path(relative_path):
+    """Return a bundled resource path for both Python and PyInstaller builds."""
+    base_path = getattr(
+        sys,
+        "_MEIPASS",
+        os.path.dirname(os.path.abspath(__file__)),
+    )
+    return os.path.join(base_path, relative_path)
 
 
 import io
@@ -238,7 +263,7 @@ def _make_circle_photo(active: bool, size: int = 24):
 class LoterModernApp(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("MDLSZ_Gyorspont v1.0.4")
+        self.title(f"MDLSZ Gyorspont v{APP_VERSION}")
         self.geometry("1280x820")
         self.minsize(1060, 700)
         self.configure(bg="#F1F5F9")
@@ -260,6 +285,14 @@ class LoterModernApp(tk.Tk):
         self.sort_reverse = {}
         self.img_reg = _make_circle_photo(True, size=24)
         self.img_unreg = _make_circle_photo(False, size=24)
+        self.start_logo_images = []
+        for logo_path in START_SCREEN_LOGOS:
+            try:
+                self.start_logo_images.append(
+                    tk.PhotoImage(file=resource_path(logo_path))
+                )
+            except (OSError, tk.TclError):
+                self.start_logo_images.append(None)
 
         self._setup_styles()
         self._build_start_screen()
@@ -310,11 +343,22 @@ class LoterModernApp(tk.Tk):
         outer = tk.Frame(self, bg="#F1F5F9")
         outer.pack(fill="both", expand=True)
 
+        # The logos sit outside the central card, matching the agreed layout.
+        logo_positions = (0.12, 0.88)
+        for logo_image, relx in zip(self.start_logo_images, logo_positions):
+            if logo_image is not None:
+                tk.Label(
+                    outer,
+                    image=logo_image,
+                    bg="#F1F5F9",
+                    borderwidth=0,
+                ).place(relx=relx, rely=0.5, anchor="center")
+
         card = tk.Frame(
             outer,
             bg="#FFFFFF",
             padx=42,
-            pady=40,
+            pady=34,
             highlightbackground="#CBD5E1",
             highlightthickness=1,
         )
@@ -322,7 +366,7 @@ class LoterModernApp(tk.Tk):
 
         tk.Label(
             card,
-            text="MDLSZ_Gyorspont",
+            text="MDLSZ Gyorspont",
             font=("Segoe UI", 26, "bold"),
             fg="#0F172A",
             bg="#FFFFFF",
@@ -342,6 +386,144 @@ class LoterModernApp(tk.Tk):
             cursor="hand2",
             command=self._open_excel_dialog,
         ).pack(fill="x")
+
+        update_frame = tk.Frame(
+            card,
+            bg="#CBD5E1",
+            padx=1,
+            pady=1,
+        )
+        update_frame.pack(fill="x", pady=(12, 0))
+
+        self.update_check_button = tk.Button(
+            update_frame,
+            text="Frissítések keresése",
+            font=("Segoe UI", 12, "bold"),
+            fg="#0F766E",
+            bg="#E6FFFB",
+            activebackground="#CCFBF1",
+            activeforeground="#115E59",
+            pady=9,
+            relief="flat",
+            cursor="hand2",
+            command=self._check_for_updates,
+        )
+        self.update_check_button.pack(fill="x")
+
+        self.update_status_label = tk.Label(
+            card,
+            text="",
+            font=("Segoe UI", 9),
+            fg="#64748B",
+            bg="#FFFFFF",
+            anchor="center",
+        )
+        self.update_status_label.pack(fill="x", pady=(8, 0))
+
+    def _check_for_updates(self):
+        """Check GitHub Releases without blocking the start screen."""
+        if self.update_check_button["state"] == tk.DISABLED:
+            return
+
+        self.update_check_button.configure(state=tk.DISABLED)
+        self.update_status_label.configure(text="A GitHub kiadás ellenőrzése folyamatban…")
+        threading.Thread(target=self._fetch_latest_release, daemon=True).start()
+
+    def _fetch_latest_release(self):
+        request = urllib.request.Request(
+            GITHUB_LATEST_RELEASE_API,
+            headers={
+                "Accept": "application/vnd.github+json",
+                "User-Agent": f"MDLSZ_Gyorspont/{APP_VERSION}",
+                "X-GitHub-Api-Version": "2022-11-28",
+            },
+        )
+
+        try:
+            with urllib.request.urlopen(request, timeout=8) as response:
+                release = json.loads(response.read().decode("utf-8"))
+
+            tag_name = str(release.get("tag_name", "")).strip()
+            version_match = re.search(r"(\d+)\.(\d+)\.(\d+)", tag_name)
+            if not version_match:
+                raise ValueError("A GitHub kiadás verziószáma nem olvasható.")
+
+            latest_version = tuple(int(part) for part in version_match.groups())
+            current_version = tuple(int(part) for part in APP_VERSION.split("."))
+            exe_url = next(
+                (
+                    asset.get("browser_download_url")
+                    for asset in release.get("assets", [])
+                    if asset.get("name") == RELEASE_EXE_NAME
+                ),
+                None,
+            )
+            result = {
+                "latest_version": ".".join(str(part) for part in latest_version),
+                "is_newer": latest_version > current_version,
+                "exe_url": exe_url,
+                "release_url": release.get("html_url") or GITHUB_RELEASES_URL,
+            }
+        except Exception as exc:
+            result = {"error": str(exc)}
+
+        try:
+            self.after(0, lambda: self._show_update_result(result))
+        except tk.TclError:
+            # The window may have been closed while the background check ran.
+            pass
+
+    def _show_update_result(self, result):
+        if not self.winfo_exists() or not self.update_check_button.winfo_exists():
+            return
+
+        self.update_check_button.configure(state=tk.NORMAL)
+        if "error" in result:
+            self.update_status_label.configure(text="Az ellenőrzés nem sikerült.")
+            messagebox.showwarning(
+                "Frissítés ellenőrzése",
+                "Most nem sikerült elérni a GitHubot. Ellenőrizd az internetkapcsolatot, "
+                "vagy próbáld meg később.\n\n"
+                f"Részletek: {result['error']}",
+                parent=self,
+            )
+            return
+
+        latest_version = result["latest_version"]
+        if not result["is_newer"]:
+            self.update_status_label.configure(
+                text=f"Nincs újabb kiadás (GitHub: v{latest_version}, program: v{APP_VERSION})."
+            )
+            if latest_version == APP_VERSION:
+                message = f"A program naprakész: a legújabb kiadás a v{APP_VERSION}."
+            else:
+                message = (
+                    f"A legújabb GitHub-kiadás a v{latest_version}, a programod pedig "
+                    f"v{APP_VERSION}. Nem található ennél újabb kiadás."
+                )
+            messagebox.showinfo("Frissítés ellenőrzése", message, parent=self)
+            return
+
+        self.update_status_label.configure(text=f"Új verzió érhető el: v{latest_version}.")
+        if result["exe_url"]:
+            should_download = messagebox.askyesno(
+                "Új verzió érhető el",
+                f"Megjelent az MDLSZ Gyorspont v{latest_version}.\n\n"
+                "Megnyitod a legújabb Windowsos EXE letöltését a GitHubon?",
+                parent=self,
+            )
+            if should_download:
+                webbrowser.open(result["exe_url"], new=2)
+        else:
+            should_open = messagebox.askyesno(
+                "Új verzió érhető el",
+                f"Megjelent az MDLSZ Gyorspont v{latest_version}, de ehhez a kiadáshoz "
+                "nem található MDLSZ_Gyorspont.exe fájl.\n\n"
+                "Megnyitod a GitHub kiadások oldalát?",
+                parent=self,
+            )
+            if should_open:
+                webbrowser.open(result["release_url"], new=2)
 
     # ------------------------------------------------------------------
     # 2. EXCEL BEOLVASÁS ÉS MENTÉS

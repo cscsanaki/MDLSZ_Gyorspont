@@ -1,20 +1,21 @@
 # MDLSZ Gyorspont
 
-**MDLSZ Gyorspont** Windowsos asztali alkalmazás az MDLSZ gyorspont-lövészeti versenyek helyszíni adminisztrációjához. Segítségével versenyzőket kereshetsz és nevezhetsz, eredményeket rögzíthetsz, követheted a verseny állását, valamint kezelheted az élmezőny holtversenyeit.
+**MDLSZ Gyorspont** Windowsos asztali alkalmazás az MDLSZ gyorspont lövészeti versenyek helyszíni adminisztrációjához. Segítségével versenyzőket kereshetsz és nevezhetsz, eredményeket rögzíthetsz, követheted a verseny állását, valamint kezelheted az élmezőny holtversenyeit.
 
-**Aktuális kiadás: v1.0.4 - 2026.11.25**
+> **Aktuális verzió: v1.0.6**
+
+A kezdőképernyő az MDLSZ és a Gyorspont logóját jeleníti meg. A külön keretben található, félkövér **Frissítések keresése** gombbal ellenőrizhető, hogy jelent-e meg újabb kiadás a GitHubon. Új verzió esetén a program felajánlja a kiadáshoz tartozó Windowsos `.exe` megnyitását. Az ellenőrzés nem akadályozza az XLS betöltését, és internetkapcsolat nélkül is használható a program.
 
 ## Letöltés
 
-[**MDLSZ_Gyorspont.exe letöltése Windowsra**](https://github.com/cscsanaki/MDLSZ_Gyorspont/releases/latest/download/MDLSZ_Gyorspont.exe)
-
-[Összes kiadás és forráskód megtekintése](https://github.com/cscsanaki/MDLSZ_Gyorspont/releases)
+[**MDLSZ_Gyorspont.exe letöltése Windowsra**](https://github.com/cscsanaki/MDLSZ_Gyorspont/releases/latest/download/MDLSZ_Gyorspont.exe)  
+[Összes kiadás megtekintése](https://github.com/cscsanaki/MDLSZ_Gyorspont/releases)
 
 ## Főbb funkciók
 
 - Versenyzők keresése versenyengedély-szám alapján a munkafüzet rejtett `Versenyengedelyek` lapjáról.
 - Nevezés és nevezés visszavonása a tíz versenyszám bármelyikében.
-- 0 és 195 közötti egész pontszám, illetve fegyverhiba rögzítése.
+- 0 és 195 közötti egész eredmény, illetve fegyverhiba rögzítése.
 - Az utoljára kezelt versenyzők, a teljes indulói névsor és a verseny statisztikáinak áttekintése.
 - Versenyszámonkénti dobogó megjelenítése, holtverseny feloldása a 13, 12, 11, 10 és 9 találatok számossága alapján.
 - A módosítások mentése a kiválasztott Excel-munkafüzetbe; a program megőrzi a cellastílusokat és képleteket.
@@ -35,12 +36,12 @@ Telepített Python mellett kattints duplán a `build_exe.bat` fájlra, vagy futt
 
 ```bat
 python -m pip install openpyxl pyinstaller
-python -m PyInstaller --noconfirm --onefile --windowed --name "MDLSZ_Gyorspont" mdlsz_gyorspont.py
+python -m PyInstaller --noconfirm --clean --onefile --windowed --name "MDLSZ_Gyorspont" --add-data "assets;assets" mdlsz_gyorspont.py
 ```
 
-A kész fájl itt jön létre: `dist\MDLSZ_Gyorspont.exe`. Az `.exe` futtatásához a célgépen nem kell külön Pythont telepíteni.
+A kész fájl itt jön létre: `dist\MDLSZ_Gyorspont.exe`. Ezt az `.exe`-t futtató Windows gépen nem kell külön Pythont telepíteni.
 
-## Használat versenymunkafüzettel
+## Használat verseny munkafüzettel
 
 1. Indítsd el a programot, majd az **XLS betöltése** gombbal válaszd ki a hivatalos verseny `.xlsx` munkafüzetet.
 2. Keresd meg a versenyzőt a versenyengedély-száma alapján.
@@ -49,8 +50,8 @@ A kész fájl itt jön létre: `dist\MDLSZ_Gyorspont.exe`. Az `.exe` futtatásá
 
 A munkafüzetnek az alábbi szerkezetet kell követnie:
 
-- `Versenyengedelyek` nevű lap: az A oszlopban a versenyengedély-szám, a B oszlopban a név, a C oszlopban az egyesület szerepel.
-- Mind a tíz versenyszámhoz külön munkalap szükséges:
+- `Versenyengedelyek` nevű lap: A oszlopban versenyengedély-szám, B oszlopban név, C oszlopban egyesület.
+- Külön munkalap mind a tíz versenyszámhoz:
   - KKPI - Nyílt és KKPI - Optika
   - NKPI - Nyílt és NKPI - Optika
   - KKPU - Nyílt és KKPU - Optika
@@ -62,21 +63,15 @@ A munkafüzetnek az alábbi szerkezetet kell követnie:
 
 A munkafüzet versenyzők nevét, engedélyszámát és egyesületét tartalmazhatja. Valódi versenyadatot, munkafüzetet, `.bak` másolatot vagy más személyes adatot ne tölts fel ebbe a repóba. Használat előtt készíts külön biztonsági másolatot, és először egy munkafüzet másolatával próbáld ki a programot. A program a kiválasztott munkafüzetet közvetlenül módosítja és menti.
 
-## A repó fontosabb fájljai
+## A repó fájljai
 
-- `.github/ISSUE_TEMPLATE/` — hibajelentési és funkciójavaslati sablonok
-- `.github/PULL_REQUEST_TEMPLATE.md` — pull request sablon
-- `.gitignore` — a Git által figyelmen kívül hagyott fájlok szabályai
-- `CODE_OF_CONDUCT.md` — közösségi magatartási szabályok
-- `CONTRIBUTING.md` — útmutató a közreműködéshez
-- `LICENSE` — MIT licenc
-- `README.md` — projekt- és használati leírás
-- `SECURITY.md` — biztonsági hibák bejelentésének módja
-- `build_exe.bat` — Windowsos build parancsfájl
 - `mdlsz_gyorspont.py` — a program Python-forráskódja
+- `build_exe.bat` — Windowsos build parancsfájl
+- `assets/` — a kezdőképernyőn használt MDLSZ és Gyorspont logó
+- `README.md` — projekt- és használati leírás
 
-A lefordított `.exe` külön letölthető a fenti hivatkozásról. A kiadások oldalán a forráskód archívuma is elérhető.
+A lefordított `.exe` a GitHub **Releases** részében tölthető le.
 
 ## Licenc
 
-A szoftver az [MIT licenc](LICENSE) feltételei szerint használható. A részleteket a repó gyökerében található `LICENSE` fájl tartalmazza.
+Ehhez a repóhoz még nincs licenc kiválasztva. Licenc hozzáadásáig minden jog fenntartva; a szoftver felhasználásához, módosításához vagy továbbterjesztéséhez kérd a repó tulajdonosának engedélyét.
